@@ -164,6 +164,29 @@
             });
           }
           
+          function get_Details(id){
+            $.ajax({
+              url:"AdminPanel?a=View_Price_Detail",
+              type: "POST",
+              data : {"id":id},
+              
+              success: function (data, textStatus, jqXHR) {
+                
+                        if(isNew === true){
+                          var obj=JSON.parse(data);
+                          $('#currentPrice').html(obj[0].price);
+                          $('#updateDate').html(obj[0].date);
+                          }
+                    },
+              error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                        alert(jqXHR.responseText);
+                    },
+              complete: function (jqXHR, textStatus ) {
+                        
+                }
+            });
+          }
           
           function currentPrice(){
             $.ajax({

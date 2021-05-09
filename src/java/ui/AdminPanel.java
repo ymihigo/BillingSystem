@@ -28,6 +28,8 @@ public class AdminPanel extends HttpServlet{
     JSONArray list=new JSONArray();
     JSONObject job=new JSONObject();
     
+    DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MM-dd-yyyy");
+    
     AdminServices as=new AdminServicesImpl();
     
     GenericDao gd=new GenericDao();
@@ -62,7 +64,6 @@ public class AdminPanel extends HttpServlet{
             JSONObject obj=new JSONObject();
             
             obj.put("amount", Double.toString(p.getPrice()));
-            DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MM-dd-yyyy");
             String formatString=p.getUpdateOn().format(formatter);
             
             obj.put("updatedDate", formatString);
@@ -87,7 +88,7 @@ public class AdminPanel extends HttpServlet{
           JSONObject obj=new JSONObject();
           Pricing p=gd.currentPrice();
           
-          DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MM-dd-yyyy");
+          
           String formattedDate=p.getUpdateOn().format(formatter);
           
           obj.put("price", String.valueOf(p.getPrice()));
@@ -97,6 +98,38 @@ public class AdminPanel extends HttpServlet{
           
           out.print(list.toJSONString());
           out.flush();
+          
+        }catch(Exception ex){
+          response.setStatus(400);
+          out.print(ex.getMessage());
+          out.flush();
+        }
+        break;
+      case "View_Price_Detail":
+        try{
+          
+          JSONObject obj=new JSONObject();
+          int id=Integer.parseInt(request.getParameter("id"));
+          Pricing p=(Pricing) gd.getObject(pricing, id);
+          
+          if(p== null){
+            obj.put("price", "");
+            obj.put("date", "");
+            list.add(obj);
+            out.print(list.toJSONString());
+            out.flush();
+          }
+          
+          
+          else{
+            obj.put("price", String.valueOf(p.getPrice()));
+            
+            String formatedDate=p.getUpdateOn().format(formatter);
+            obj.put("date", formatedDate);
+            list.add(obj);
+            out.print(list.toJSONString());
+            out.flush();
+          }
           
         }catch(Exception ex){
           response.setStatus(400);
