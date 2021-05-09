@@ -93,6 +93,10 @@ public class AdminPanel extends HttpServlet{
           obj.put("price", String.valueOf(p.getPrice()));
           obj.put("date",  formattedDate);
           
+          list.add(obj);
+          
+          out.print(list.toJSONString());
+          out.flush();
           
         }catch(Exception ex){
           response.setStatus(400);

@@ -46,7 +46,6 @@
               <th></th>
               <th></th>
               <th></th>
-              <th></th>
             </tr>
           </thead>
         </table>
@@ -70,6 +69,7 @@
     
     <script>
         getAll();
+        currentPrice();
         var isNew=true;
 
         function addPrice(){
@@ -105,17 +105,21 @@
 //        }
 
 
-             success: function(jqXHR, textStatus, message){
+             success: function(data){
 //             allPrice();
 //             alert(data);
 //             console.log(data);
 //             currentPrice();
+            getAll();
+            currentPrice();
 
-            alert(jqXHR.responseText);
+            alert(data);
               },
             error: function(jqXHR, textStatus, message) {
 //                 error handling
 //                 allPrice();
+                getAll();
+                currentPrice();
                alert(jqXHR.responseText);
                 },
             complete: function(){
@@ -170,8 +174,8 @@
               success:function(data){
                 if(isNew === true){
                   var obj=JSON.parse(data);
-                  $('#print_price').html(obj[0].price);
-                  $('#print_date').html(obj[0].date);
+                  $('#currentPrice').html(obj[0].price);
+                  $('#updateDate').html(obj[0].date);
                 }
               }
               
