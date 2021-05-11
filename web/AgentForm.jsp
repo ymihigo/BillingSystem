@@ -57,7 +57,7 @@
     </div>
     <div class="col-sm-8">
 
-        <h3>AGENT TABLE</h3>
+        <h3>AGENTs TABLE</h3>
 
         <div class="panel-body">
             <table id="tbl-agent" class="table table-bordered" cellpadding="0" cellspacing="0" width="100%">
