@@ -99,6 +99,18 @@ public class GenericDao {
       ss.close();
     }
   }
+  public Agent searchAgentByNID(String nid){
+    try{
+      ss=sf.openSession();
+      String hql="from "+Agent.class.getName()+" where nid='"+nid+"'";
+      Query query=ss.createQuery(hql);
+      return(Agent) query.uniqueResult();
+    }catch(HibernateException ex){
+      throw ex;
+    }finally{
+      ss.close();
+    }
+  }
   
   public Customer searchByNID(String nid){
     try{

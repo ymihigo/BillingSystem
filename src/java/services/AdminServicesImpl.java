@@ -26,6 +26,12 @@ public class AdminServicesImpl implements AdminServices {
        if(!NID.matches("^119\\d{13}$")){
         throw new RuntimeException("invalid national id format");
       }
+       
+       Agent ag=gd.searchAgentByNID(NID);
+       
+       if(ag!=null){
+         throw new RuntimeException("the entered National Id already exist in system");
+       }
       
       if(!lname.matches("^[a-zA-Z]*$")){
         throw new RuntimeException("invalid name");

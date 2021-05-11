@@ -21,7 +21,7 @@
 
     <form id="price-frm">
         <div class="form-group row">
-            <label for="colFormLabelLg" class="col-sm-1 col-form-label col-form-label-lg">Email</label>
+            <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Price Amount</label>
             <div class="col-sm-2">
               <input type="text" id="price" name="price" class="form-control form-control-lg"  placeholder="amount/cubic meter" size="30px" required="" pattern="^[0-9](\d*\.)?\d+$" title="only positive numbers are allowed">
             </div>
@@ -147,7 +147,7 @@
                             [
                               {"sTitle": "Amount","mData": "amount"},
                               {"sTitle": "Updated on","mData": "updatedDate"},
-                              {"sTitle": "Status","mData": "status"},
+                              {"sTitle": "is it Active","mData": "status"},
                               {
                                 "sTitle": "Edit", "mData": "id",
                                 "render" :function (mData)
