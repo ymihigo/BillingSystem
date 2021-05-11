@@ -2,6 +2,7 @@
 package ui;
 
 import dao.GenericDao;
+import domains.Agent;
 import domains.Pricing;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,6 +35,7 @@ public class AdminPanel extends HttpServlet{
     
     GenericDao gd=new GenericDao();
     
+    Agent agent=new Agent();
     Pricing pricing=new Pricing();
     
     String a=request.getParameter("a");
@@ -141,8 +143,6 @@ public class AdminPanel extends HttpServlet{
       case "newAgent":
         try{
           
-          JSONObject obj=new JSONObject();
-          
           String nid=request.getParameter("nid");
           String lname=request.getParameter("name");
           String fname=request.getParameter("surname");
@@ -156,6 +156,34 @@ public class AdminPanel extends HttpServlet{
           response.setStatus(200);
           
           out.print(msg);
+          out.flush();
+        }catch(Exception ex){
+          response.setStatus(400);
+          out.print(ex.getMessage());
+          out.flush();
+        }
+        break;
+        
+      case "allAgent":
+        try{
+          
+          List<Agent> liag=(List<Agent>) gd.printAll(agent);
+          
+          for(Agent ag:liag){
+            JSONObject obj=new JSONObject();
+            obj.put("id",String.valueOf(ag.getId()));
+            obj.put("names", ag.getLname()+" "+ag.getFname());
+            obj.put("nid", ag.getNID());
+            obj.put("phone", ag.getPhone());
+            obj.put("street", ag.getStreet());
+            obj.put("username", ag.getUsername());
+            obj.put("password", ag.getPassword());
+            
+            list.add(obj);
+          }
+          
+          response.setStatus(200);
+          out.print(list.toJSONString());
           out.flush();
         }catch(Exception ex){
           response.setStatus(400);
