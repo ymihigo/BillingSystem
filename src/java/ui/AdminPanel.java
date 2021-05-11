@@ -137,6 +137,32 @@ public class AdminPanel extends HttpServlet{
           out.flush();
         }
         break;
+        
+      case "newAgent":
+        try{
+          
+          JSONObject obj=new JSONObject();
+          
+          String nid=request.getParameter("nid");
+          String lname=request.getParameter("name");
+          String fname=request.getParameter("surname");
+          String phone=request.getParameter("phone");
+          String street=request.getParameter("street");
+          String uname=request.getParameter("username");
+          String pwd=request.getParameter("password");
+          
+          String msg=as.registerAgent(nid, fname, lname, phone, street, uname, pwd);
+          
+          response.setStatus(200);
+          
+          out.print(msg);
+          out.flush();
+        }catch(Exception ex){
+          response.setStatus(400);
+          out.print(ex.getMessage());
+          out.flush();
+        }
+        break;
     }
     
   }

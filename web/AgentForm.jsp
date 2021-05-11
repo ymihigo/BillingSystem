@@ -18,7 +18,7 @@
         <div class="container">
 
             <h3>AGENT FORM</h3>
-            <form>
+            <form id="agent-frm">
                     <label for="name">National ID</label>
                     <input type="text" class="form-control" id="nid" name="nid" placeholder="National ID" pattern="^119\d{13}$" required="" title="respect national id format">
                 
@@ -43,15 +43,9 @@
                     </div>
                  
                     <label for="password">Password</label>
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$" required="">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$" required="">
                   
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-                    <label class="form-check-label" for="invalidCheck2">
-                      Agree to terms and conditions
-                    </label>
-                  </div>
-                <button class="btn btn-primary" type="submit">Save</button>
+                    <button class="btn btn-primary" type="submit" onclick="addAgent()">Save</button>
               </form>
         </div>
     </div>
@@ -89,5 +83,40 @@
     <script src="component/jquery/jquery.js" type="text/javascript"></script>
     <script src="component/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="component/jquery.validate.min.js" type="text/javascript"></script>
+    <script>
+      
+      var isNew=true;
+      
+      function addAgent(){
+        if($("#agent-frm").valid()){
+          var url="";
+          var data="";
+          var method;
+          
+          if(isNew === true){
+            url='AdminPanel?a=newAgent';
+            data=$("#agent-frm").serialize();
+            method='POST';
+          }
+          $.ajax({
+            type:method,
+            url:url,
+            dataType: 'JSON',
+            data:data,
+            
+            success: function (data, textStatus, jqXHR) {
+                        alert(data);
+                    },
+            error: function (jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR.responseText);
+                    },
+            complete: function (jqXHR, textStatus ) {
+                        window.location.reload(true);
+                }
+          });
+        }
+      }
+      
+    </script>
 </body>
 </html>

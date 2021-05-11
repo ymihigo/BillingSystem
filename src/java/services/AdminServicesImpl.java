@@ -60,7 +60,7 @@ public class AdminServicesImpl implements AdminServices {
         throw new RuntimeException("username taken");
       }
       
-     String msg=gd.create(new Agent(NID, fname, lname, phone, street, username, password));
+     String msg=gd.create(new Agent(NID, fname.substring(0, 1).toUpperCase()+fname.substring(1).toLowerCase(), lname.toUpperCase(), phone, street, username, password));
      return msg;
      
     }catch(Exception ex){
