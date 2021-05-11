@@ -3,6 +3,7 @@ package ui;
 
 import dao.GenericDao;
 import domains.Agent;
+import domains.Customer;
 import domains.Pricing;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,7 +28,6 @@ public class AdminPanel extends HttpServlet{
     PrintWriter out=response.getWriter();
     
     JSONArray list=new JSONArray();
-    JSONObject job=new JSONObject();
     
     DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MM-dd-yyyy");
     
@@ -37,6 +37,7 @@ public class AdminPanel extends HttpServlet{
     
     Agent agent=new Agent();
     Pricing pricing=new Pricing();
+    Customer customer=new Customer();
     
     String a=request.getParameter("a");
     
@@ -140,7 +141,7 @@ public class AdminPanel extends HttpServlet{
         }
         break;
         
-      case "newAgent":
+        case "newAgent":
         try{
           
           String nid=request.getParameter("nid");
@@ -164,14 +165,37 @@ public class AdminPanel extends HttpServlet{
         }
         break;
         
-      case "allAgent":
+      case "newCustomer":
+        try{
+          
+          String nid=request.getParameter("nid");
+          String lname=request.getParameter("name");
+          String fname=request.getParameter("surname");
+          String phone=request.getParameter("phone");
+          String street=request.getParameter("street");
+          
+          String msg=as.registerCustomer(nid, fname, lname, phone, street);
+          
+          response.setStatus(200);
+          
+          out.print(msg);
+          out.flush();
+        }catch(Exception ex){
+          response.setStatus(400);
+          out.print(ex.getMessage());
+          out.flush();
+        }
+        break;
+        
+        
+        case "allAgent":
         try{
           
           List<Agent> liag=(List<Agent>) gd.printAll(agent);
           
           for(Agent ag:liag){
             JSONObject obj=new JSONObject();
-            obj.put("id",String.valueOf(ag.getId()));
+            obj.put("id",ag.getId());
             obj.put("names", ag.getLname()+" "+ag.getFname());
             obj.put("nid", ag.getNID());
             obj.put("phone", ag.getPhone());
@@ -181,6 +205,84 @@ public class AdminPanel extends HttpServlet{
             
             list.add(obj);
           }
+          
+          response.setStatus(200);
+          out.print(list.toJSONString());
+          out.flush();
+        }catch(Exception ex){
+          response.setStatus(400);
+          out.print(ex.getMessage());
+          out.flush();
+        }
+        break;
+        
+      case "allCustomer":
+        try{
+          
+          List<Customer> liag=(List<Customer>) gd.printAll(customer);
+          
+          for(Customer ag:liag){
+            JSONObject obj=new JSONObject();
+            obj.put("id",ag.getId());
+            obj.put("names", ag.getLname()+" "+ag.getFname());
+            obj.put("nid", ag.getNID());
+            obj.put("phone", ag.getPhone());
+            obj.put("street", ag.getStreet());
+            
+            list.add(obj);
+          }
+          
+          response.setStatus(200);
+          out.print(list.toJSONString());
+          out.flush();
+        }catch(Exception ex){
+          response.setStatus(400);
+          out.print(ex.getMessage());
+          out.flush();
+        }
+        break;
+        
+      case "searchAgentById":
+        try{
+          JSONObject obj=new JSONObject();
+          int id=Integer.parseInt(request.getParameter("id"));
+          Agent ag=(Agent) gd.getObject(agent, id);
+          
+          obj.put("id", String.valueOf(ag.getId()));
+          obj.put("nid", ag.getNID());
+          obj.put("lname", ag.getLname());
+          obj.put("fname", ag.getFname());
+          obj.put("phone",ag.getPhone());
+          obj.put("street", ag.getStreet());
+          obj.put("username",ag.getUsername());
+          obj.put("password", ag.getPassword());
+          
+          list.add(obj);
+          
+          response.setStatus(200);
+          out.print(list.toJSONString());
+          out.flush();
+        }catch(Exception ex){
+          response.setStatus(400);
+          out.print(ex.getMessage());
+          out.flush();
+        }
+        break;
+        
+         case "searchCustomerById":
+        try{
+          JSONObject obj=new JSONObject();
+          int id=Integer.parseInt(request.getParameter("id"));
+          Customer ag=(Customer) gd.getObject(customer, id);
+          
+          obj.put("id", String.valueOf(ag.getId()));
+          obj.put("nid", ag.getNID());
+          obj.put("lname", ag.getLname());
+          obj.put("fname", ag.getFname());
+          obj.put("phone",ag.getPhone());
+          obj.put("street", ag.getStreet());
+          
+          list.add(obj);
           
           response.setStatus(200);
           out.print(list.toJSONString());
